@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>How SenangTurn Works</title>
+<meta name="description" content="Interactive demo of SenangTurn: a freestanding, no-electricity frame that lets a senior caregiver turn a bedbound partner alone.">
+<meta name="theme-color" content="#FFF3DF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17110D" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="How SenangTurn Works">
+<meta property="og:description" content="Step through how a caregiver turns a bedbound partner alone, with no electricity and no drilling.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="wrap">
+<header>
+<div class="eyebrow">SenangTurn · CC0007 Group 28 · interactive demo</div>
+<h1>How SenangTurn works</h1>
+<p class="lede">A senior caregiver turns a bedbound partner alone, with no electricity and no drilling. Step through it below, or drag the crank yourself. The view is from the foot of the bed.</p>
+</header>
+
+<main class="bench" aria-label="Interactive demonstration">
+<div class="stage">
+<svg viewBox="0 0 440 400" role="img" aria-labelledby="svgt">
+<title id="svgt">End view of a bed with a freestanding frame, one sliding pulley, a hand-crank winch and a turning sheet</title>
+<rect class="base" x="34" y="372" width="330" height="8" rx="2"></rect>
+<line x1="20" y1="380" x2="420" y2="380" stroke="var(--line)" stroke-width="1"></line>
+<rect class="mattress" x="110" y="270" width="250" height="26" rx="6" stroke-width="1.5"></rect>
+<rect class="bedframe" x="110" y="296" width="250" height="10" rx="2" stroke-width="1"></rect>
+<line class="frame" x1="128" y1="306" x2="128" y2="372" stroke-width="2.5"></line>
+<line class="frame" x1="342" y1="306" x2="342" y2="372" stroke-width="2.5"></line>
+<rect class="rail" x="98" y="214" width="8" height="84" rx="2" stroke-width="1"></rect>
+<rect class="rail" x="364" y="214" width="8" height="84" rx="2" stroke-width="1"></rect>
+<line class="frame" x1="60" y1="44" x2="60" y2="372" stroke-width="5" stroke-linecap="round"></line>
+<line class="frame" x1="60" y1="44" x2="370" y2="44" stroke-width="5" stroke-linecap="round"></line>
+<line class="trackline" x1="112" y1="52" x2="362" y2="52" stroke-width="3" stroke-linecap="round"></line>
+<path id="sheet" class="sheet" d="M164 256 Q186 288 249 289 Q312 288 334 256" stroke-width="4" stroke-linecap="round"></path>
+<rect class="pillow" x="214" y="242" width="70" height="16" rx="8" stroke-width="1.5"></rect>
+<g id="person">
+<circle class="person" cx="249" cy="236" r="15" stroke-width="1.5"></circle>
+<path class="hair" d="M235 232 Q249 214 263 232" stroke-width="3" stroke-linecap="round"></path>
+<ellipse class="person" cx="184" cy="268" rx="9" ry="13" stroke-width="1.5"></ellipse>
+<ellipse class="person" cx="314" cy="268" rx="9" ry="13" stroke-width="1.5"></ellipse>
+<path class="person" d="M196 262 Q198 246 220 244 L278 244 Q300 246 302 262 Q300 282 278 284 L220 284 Q198 282 196 262 Z" stroke-width="1.5"></path>
+</g>
+<rect id="barL" class="bar" x="157" y="244" width="14" height="12" rx="2" stroke-width="1"></rect>
+<rect id="barR" class="bar" x="327" y="244" width="14" height="12" rx="2" stroke-width="1"></rect>
+<path id="rope" class="rope" d="" stroke-width="2"></path>
+<g id="trolley">
+<rect class="part" x="142" y="46" width="20" height="12" rx="2" stroke-width="1.5"></rect>
+<circle id="pin" class="pin-ok" cx="152" cy="52" r="3"></circle>
+<line class="frame" x1="152" y1="58" x2="152" y2="62" stroke-width="2"></line>
+<circle class="part" cx="152" cy="74" r="12" stroke-width="1.5"></circle>
+</g>
+<rect class="part" x="40" y="212" width="36" height="32" rx="4" stroke-width="1.5"></rect>
+<line class="frame" x1="76" y1="228" x2="86" y2="228" stroke-width="4" stroke-linecap="round"></line>
+<g id="crank"><line id="crankArm" class="frame" x1="86" y1="228" x2="86" y2="206" stroke-width="3" stroke-linecap="round"></line><line id="crankGrip" class="frame" x1="86" y1="206" x2="98" y2="206" stroke-width="4" stroke-linecap="round"></line><circle id="crankKnob" class="part" cx="100" cy="206" r="5" stroke-width="1.5"></circle></g>
+<text class="svglbl" x="38" y="228" text-anchor="end">Crank</text>
+<text class="svglbl" x="380" y="40">Track</text>
+<text id="stop" class="stoplbl" x="250" y="210" text-anchor="middle" visibility="hidden">30° stop reached</text>
+</svg>
+<div class="chips" aria-live="polite">
+<span id="chipPin" class="chip ok">Pin locked</span>
+<span id="chipRope" class="chip">Rope not clipped</span>
+<span id="chipLift" class="chip">Flat</span>
+<span id="chipForce" class="chip">Crank force ≈ 3.1 kg</span>
+<span id="chipTurns" class="chip">Handle turns: 0.0 of 4</span>
+</div>
+</div>
+
+<div class="card">
+<h2>Operator's card</h2>
+<div class="toggles">
+<div class="seg" role="group" aria-label="Turn direction"><span>Turn the person</span>
+<button id="dirR" type="button" aria-pressed="true">To the right</button>
+<button id="dirL" type="button" aria-pressed="false">To the left</button></div>
+<div class="seg" role="group" aria-label="Crank gear"><span>Crank gear</span>
+<button id="gearN" type="button" aria-pressed="true">Normal</button>
+<button id="gearE" type="button" aria-pressed="false">Easy (½ force)</button></div>
+</div>
+<ol class="steps" id="steps">
+<li><div><strong>Start flat</strong>Lower fully and slacken the rope. Never slide the pulley while someone is lifted.</div></li>
+<li><div><strong>Slide and lock</strong>Pull the waist-height cord. The pulley rolls above the edge to lift and the spring pin clicks in.</div></li>
+<li><div><strong>Clip</strong>Clip the rope to the bar on that edge of the sheet.</div></li>
+<li><div><strong>Crank</strong>Turn the handle. The edge lifts and the person rolls slowly to the other side. Stop at the 30° mark.</div></li>
+<li><div><strong>Lower</strong>Release the ratchet gently until flat, then slide the sheet out.</div></li>
+</ol>
+<div class="nav">
+<button id="back" type="button">Back</button>
+<button id="next" type="button" class="primary">Next step</button>
+<button id="play" type="button">Play all steps</button>
+</div>
+<div class="slider">
+<label for="angle">Crank by hand: lift angle <output id="angleOut" for="angle">0°</output></label>
+<input type="range" id="angle" min="0" max="30" step="1" value="0" disabled>
+<p class="hint" id="hint">Reach the Crank step to turn the handle yourself.</p>
+</div>
+</div>
+</main>
+
+</div>
+
+<script src="script.js" defer></script>
+</body>
+</html>
