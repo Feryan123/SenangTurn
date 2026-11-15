@@ -1,12 +1,14 @@
 (function(){
   var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var PL = 152, PR = 322, BARX = {left:164, right:334};
-  var S = {dir:'right', gear:'normal', step:0, pulleyX:PL, angle:0, clip:null, locked:true, busy:false};
+  var PLAY_PACE = 2, PLAY_GAP = 1200;
+  var S = {dir:'right', gear:'normal', step:0, pulleyX:PL, angle:0, clip:null, locked:true, busy:false, pace:1};
   var $ = function(id){return document.getElementById(id);};
   function liftSide(){ return S.dir === 'right' ? 'left' : 'right'; }
   function tween(key, to, ms, done){
     var from = S[key];
     if (reduced || from === to){ S[key] = to; render(); if (done) done(); return; }
+    ms *= S.pace;
     var t0 = performance.now();
     function f(now){
       var p = Math.min(1, (now - t0) / ms);
@@ -73,9 +75,9 @@
       var target = liftSide() === 'left' ? PL : PR;
       if (Math.abs(S.pulleyX - target) < 1){ fin(); return; }
       S.locked = false; render();
-      setTimeout(function(){ tween('pulleyX', target, 1100, function(){ S.locked = true; render(); fin(); }); }, reduced ? 0 : 300);
+      setTimeout(function(){ tween('pulleyX', target, 1100, function(){ S.locked = true; render(); fin(); }); }, reduced ? 0 : 300 * S.pace);
     }
-    else if (i === 2){ S.clip = liftSide(); render(); setTimeout(fin, reduced ? 0 : 350); }
+    else if (i === 2){ S.clip = liftSide(); render(); setTimeout(fin, reduced ? 0 : 350 * S.pace); }
     else if (i === 3){ tween('angle', 30, S.gear === 'easy' ? 4600 : 2400, fin); }
     else if (i === 4){ tween('angle', 0, 1400, fin); }
   }
@@ -90,8 +92,11 @@
     S.step = s; render(); setStepUI();
   });
   $('play').addEventListener('click', function(){
-    reset(); var i = 0;
-    (function go(){ if (i > 4) return; runStep(i, function(){ i++; setTimeout(go, reduced ? 0 : 450); }); })();
+    reset(); var i = 0; S.pace = PLAY_PACE;
+    (function go(){
+      if (i > 4){ S.pace = 1; return; }
+      runStep(i, function(){ i++; setTimeout(go, reduced || i > 4 ? 0 : PLAY_GAP); });
+    })();
   });
   $('angle').addEventListener('input', function(e){ S.angle = +e.target.value; render(); });
   function setDir(d){ S.dir = d; $('dirR').setAttribute('aria-pressed', d === 'right'); $('dirL').setAttribute('aria-pressed', d === 'left'); reset(); }
